@@ -1,0 +1,6 @@
+node_modules
+package-lock.json
+//all .js files 
+*.js
+# Keep environment variables out of version control
+.env

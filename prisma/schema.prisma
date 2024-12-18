@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+
+
+  @@map("admins")
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String
+  image       String
+  price       Float
+  createdAt   DateTime     @default(now())
+
+  category    Category     @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  orders      OrderProduct[]
+
+  updatedAt   DateTime     @updatedAt
+  @@map("products")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+
+  products  Product[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  @@map("categories")
+}
+
+model Client {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+
+  orders   Order[]
+
+  @@map("clients")
+}
+
+enum OrderStatus {
+  Preparing
+  OnWay
+  Delivered
+}
+
+
+model Order {
+  id          Int       @id @default(autoincrement())
+  client      Client    @relation(fields: [clientId], references: [id])
+  clientId    Int
+
+  status          OrderStatus @default(Preparing)
+  orderProduct    OrderProduct[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@map("orders")
+}
+
+model OrderProduct {
+  id          Int       @id @default(autoincrement())
+  quantity    Int
+  
+  order       Order     @relation(fields: [orderId], references: [id])
+  orderId     Int
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   Int
+
+  @@map("order_products")
+}
