@@ -28,7 +28,6 @@ export async function updateProduct(req: Request, res: Response) {
 
 export async function deleteProduct(req: Request, res: Response) {
     const id = parseInt(req.params.id);
-    console.log(id);
     await productService.deleteProduct(id);
     res.sendStatus(200);
 }
