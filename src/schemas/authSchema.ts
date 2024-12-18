@@ -5,7 +5,7 @@ import {SignUpAdminData, SignInAdminData} from "../types/adminTypes"
 export const signUpSchema = joi.object<SignUpAdminData>({
     email: joi.string().email().required(),
     password: joi.string().min(6).required(),
-    confirmPassword: joi.string().valid(joi.ref('password')).required()
+    confirmPassword: joi.string().valid(joi.ref('password')).required().messages({'any.only': 'Passwords do not match'}),
 })
 
 export const signInSchema = joi.object<SignInAdminData>({

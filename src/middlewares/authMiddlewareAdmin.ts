@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import userService from '../services/adminService';
+import userService from '../services/usersService';
 
 import { unauthorizedError } from '../utils/errorUtils';
 
@@ -23,7 +23,7 @@ export async function ensureAuthenticatedMiddleware(
     const decodedToken = jwt.verify(token, JWT_SECRET) as unknown as { userId: number };
     const { userId } = decodedToken;
 
-    const isUserAdmin = userService.getUserByIdOrFail(userId);
+    const isUserAdmin = userService.getAdminByIdOrFail(userId);
 
     if (!isUserAdmin) throw unauthorizedError('User is not an admin');
     

@@ -88,6 +88,16 @@ async function main() {
     },
   });
 
+
+  const password2 = 'senha_segura';
+  const hashedPassword2 = await bcrypt.hash(password2, 10);
+  await prisma.client.create({
+    data: {
+      email: 'client@example.com',
+      password: hashedPassword2,
+    },
+  });
+
 }
 
 main()
