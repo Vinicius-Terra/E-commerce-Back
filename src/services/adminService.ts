@@ -43,10 +43,18 @@ async function getUserOrFail(login: SignInAdminData) {
   return user;
 }
 
+async function getUserByIdOrFail(id: number) {
+  const user = await adminRepository.findById(id);
+  if (!user) throw notFoundError('User not found');
+
+  return user;
+}
+
 
 const authService = {
   createAdmin,
   login,
+  getUserByIdOrFail,
 };
 
 export default authService;
