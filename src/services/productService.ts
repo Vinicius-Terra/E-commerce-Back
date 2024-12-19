@@ -46,7 +46,7 @@ async function updateProduct(product: ProductData, id: number) {
         throw notFoundError("Product not found");
     }
 
-    if (conflictExistingProduct && existingProduct.id !== id) {
+    if (conflictExistingProduct && conflictExistingProduct.id !== id) {
         throw conflictError("Product name must be unique");
     }
 

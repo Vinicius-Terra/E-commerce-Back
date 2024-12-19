@@ -29,7 +29,6 @@ export async function ensureAuthenticatedAdminMiddleware(
       if (!isUserAdmin) throw unauthorizedError('User is not an admin');
       
       res.locals.user = userId;
-      next();
     } catch (error) {
       throw unauthorizedError('User not found');
     }
