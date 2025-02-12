@@ -3,8 +3,11 @@ import { ProductData } from "../repositories/productRepository";
 import { productService } from '../services/productService';
 
 export async function getAllProducts(req: Request, res: Response) {
-    const products = await productService.getAllProducts();
-    res.send(products).status(200);
+    const { name, categoryId } = req.query;
+
+    const categoryIdNumber = categoryId ? parseInt(categoryId as string, 10) : undefined;
+    const products = await productService.getAllProducts(name as string, categoryIdNumber as number);
+    res.status(200).send(products);
 }
 
 export async function getProductByName(req: Request, res: Response) {

@@ -42,7 +42,6 @@ async function createOrder(userId: number, products: Array<{productId: number, q
 
 async function updateOrder(order: OrderDataUpdate) {
 
-    console.log(order.id);
     if (isNaN(order.id)) {
         throw notFoundError("Invalid id");
     }

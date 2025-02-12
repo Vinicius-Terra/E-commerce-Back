@@ -6,8 +6,8 @@ import * as categoryRepository from "../repositories/categoryRepository";
 import { conflictError, notFoundError } from "../utils/errorUtils";
 
 
-async function getAllProducts() {
-    return productRepository.getAllProducts();
+async function getAllProducts(name?: string, categoryId?: number) {
+    return productRepository.getAllProducts(name, categoryId);
 }
 
 async function getProductByName(name: string) {

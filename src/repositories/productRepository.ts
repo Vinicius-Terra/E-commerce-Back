@@ -11,8 +11,20 @@ export const createProduct = async (data: ProductData): Promise<Product> => {
   });
 };
 
-export const getAllProducts = async (): Promise<Product[]> => {
-  return await prisma.product.findMany();
+export const getAllProducts = async (name?: string, categoryId?: number): Promise<Product[]> => {
+  const filters: any = {};
+
+  if (name) {
+    filters.name = { contains: name, mode: 'insensitive' };
+  }
+
+  if (categoryId) {
+    filters.categoryId = categoryId;
+  }
+
+  return await prisma.product.findMany({
+    where: filters,
+  });
 };
 
 export const getProductById = async (id: number): Promise<Product | null> => {
