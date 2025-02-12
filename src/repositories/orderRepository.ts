@@ -4,11 +4,13 @@ export type OrderData = Omit<Order, 'id' | 'createdAt' | 'updatedAt' | 'status'>
 export type OrderDataUpdate = Omit<Order, 'createdAt' | 'updatedAt'>;
 
 
-export const createOrder = async (data: OrderData, products: Array<{productId: number, quantity: number}>): Promise<Order> => {
+export const createOrder = async (userId: number, products: Array<{productId: number, quantity: number}>): Promise<Order> => {
+  
   const order = await prisma.order.create({
     data: {
-      ...data,
-    },
+      clientId: userId,
+      status: 'Preparing'
+    }
   });
 
   const orderProducts = products.map(product => {
@@ -52,19 +54,7 @@ export const getOrderById = async (id: number): Promise<OrderData | null> => {
   });
 };
 
-export const updateOrder = async (data: OrderDataUpdate, products: Array<{productId: number, quantity: number}>): Promise<OrderData> => {
-
-  const orderProducts = products.map(product => {
-    return {
-      orderId: data.id,
-      productId: product.productId,
-      quantity: product.quantity
-    }
-  });
-
-  await prisma.orderProduct.updateMany({
-    data: orderProducts
-  });
+export const updateOrder = async (data: OrderDataUpdate): Promise<OrderData> => {
 
   return await prisma.order.update({
     where: { id: data.id },

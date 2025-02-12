@@ -29,42 +29,35 @@ async function getOrderById(id: number) {
     return order;
 }
 
-async function createOrder(order: OrderDataInput, products: Array<{productId: number, quantity: number}>) {
-    const existingClient = await clientRepository.getClientById(order.clientId);
+async function createOrder(userId: number, products: Array<{productId: number, quantity: number}>) {
+    const existingClient = await clientRepository.getClientById(userId);
 
     if (!existingClient) {
         throw notFoundError("Client not found");
     }
 
 
-    await orderRepository.createOrder(order, products);
+    await orderRepository.createOrder(userId, products);
 }
 
-async function updateOrder(order: OrderDataUpdate, products: Array<{productId: number, quantity: number}>) {
+async function updateOrder(order: OrderDataUpdate) {
 
+    console.log(order.id);
     if (isNaN(order.id)) {
         throw notFoundError("Invalid id");
     }
 
-    const existingClient = await clientRepository.getClientById(order.clientId);
     const existingOrder = await orderRepository.getOrderById(order.id);
 
     if (!existingOrder) {
         throw notFoundError("Order not found");
     }
 
-    if (!existingClient) {
-        throw notFoundError("Client not found");
-    }
 
-    await orderRepository.updateOrder(order, products);
+    await orderRepository.updateOrder(order);
 }
 
 async function deleteOrder(id: number) {
-
-    if (isNaN(id)) {
-        throw notFoundError("Invalid id");
-    }
 
     const existingOrder = await orderRepository.getOrderById(id);
 

@@ -16,16 +16,15 @@ export async function getOrderById(req: Request, res: Response) {
 }
 
 export async function createOrder(req: Request, res: Response) {
-    const order: OrderDataInput = req.body;
+    const userId = res.locals.user;
     const products: Array<{productId: number, quantity: number}> = req.body.products;
-    await orderService.createOrder(order, products);
+    await orderService.createOrder(userId, products);
     res.sendStatus(201);
 }
 
 export async function updateOrder(req: Request, res: Response) {
-    const order: OrderDataUpdate = req.body;
-    const products: Array<{productId: number, quantity: number}> = req.body.products;
-    await orderService.updateOrder(order, products);
+    const order: OrderDataUpdate = req.body.order;
+    await orderService.updateOrder(order);
     res.sendStatus(200);
 }
 
